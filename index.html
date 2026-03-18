@@ -1719,7 +1719,7 @@ footer { background:var(--bg); padding:2rem; border-top:3px solid rgba(0,0,0,0.1
         </div>
         <div class="contact-desc">Lead Testing Engineer at UST with 5+ years in QA automation. Open to senior QA, test architect &amp; consulting opportunities.</div>
         <div class="contact-links">
-          <a href="mailto:contactstoshubham@gmail.com" class="contact-link">📧 Email</a>
+          <a id="contact-email-link" class="contact-link">📧 Email</a>
           <a href="https://linkedin.com/in/contacttoshubham" target="_blank" class="contact-link">💼 LinkedIn</a>
           <a href="tel:+918173859934" class="contact-link">📱 Call</a>
         </div>
@@ -1840,7 +1840,7 @@ footer { background:var(--bg); padding:2rem; border-top:3px solid rgba(0,0,0,0.1
 <footer>
   <div class="footer-inner">
     <div class="footer-big">LET'S BUILD QUALITY TOGETHER</div>
-    <div class="footer-cta"><a href="mailto:contactstoshubham@gmail.com" class="btn-outline" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.9rem;padding:0.6rem 1.5rem;">📧 contactstoshubham@gmail.com</a></div>
+    <div class="footer-cta" id="footer-email-wrap"></div>
     <div class="footer-row">
       <div>© 2026 Shubham Yadav · All rights reserved.</div>
       <button class="footer-back-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top ↑</button>
@@ -2243,6 +2243,31 @@ document.addEventListener('keydown', function(e) {
 
 // Init projects terminal
 typewriterProj(projData[0].lines, projData[0].repo);
+
+
+/* ── Write emails via JS so Cloudflare cannot obfuscate them ── */
+(function() {
+  var u = 'contactstoshubham';
+  var d = 'gmail.com';
+  var e = u + '@' + d;
+
+  /* Footer email button */
+  var wrap = document.getElementById('footer-email-wrap');
+  if (wrap) {
+    var a = document.createElement('a');
+    a.href = 'mailto:' + e;
+    a.className = 'btn-outline';
+    a.style.cssText = 'display:inline-flex;align-items:center;gap:0.4rem;font-size:0.9rem;padding:0.6rem 1.5rem;';
+    a.textContent = '📧 ' + e;
+    wrap.appendChild(a);
+  }
+
+  /* Contact section email link */
+  var cl = document.getElementById('contact-email-link');
+  if (cl) {
+    cl.href = 'mailto:' + e;
+  }
+})();
 
 /* ─── EXPERIENCE SWITCHBOARD ─── */
 var expData = [
