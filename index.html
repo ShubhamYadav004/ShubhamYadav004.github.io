@@ -2637,7 +2637,7 @@ function initQABot() {
     else if (/experience|work|job|company|ust|infosys|capgemini|year|role|position|career|history/.test(t)) {
       r = 'Shubham has 5+ years QA experience: UST as Lead Testing Engineer (Mar 2026-Present), Infosys as Technology Analyst (Jan 2025-Feb 2026), and Capgemini as Senior Analyst (Jun 2021-Dec 2024). All based in Pune!';
     }
-    else if (/project|github|repo|cucumber|openai|rest framework|build/.test(t)) {
+    else if (/project|github|repo|cucumber|openai|restframe|build/.test(t)) {
       r = 'Shubham has 3 GitHub projects: CucumberE2E (Selenium + BDD framework), Api_RestFramework (REST Assured API automation with 1 star), and OpenAiAutomation (AI-powered testing). All at github.com/ShubhamYadav004';
     }
     else if (/hire|available|open|opportunity|recruit|looking|freelance|consult/.test(t)) {
@@ -2667,7 +2667,7 @@ function initQABot() {
     else if (/mobile|appium|android|browserstack|device/.test(t)) {
       r = 'For mobile testing, Shubham uses Appium with Android Studio and BrowserStack for real device cloud testing. He has experience with UIAutomator for Android automation.';
     }
-    else if (/ci\/cd|jenkins|pipeline|devops|azure|github action/.test(t)) {
+    else if (/cicd|jenkins|pipeline|devops|azure|github/.test(t)) {
       r = 'Shubham is experienced with CI/CD using Jenkins pipelines, GitHub Actions workflows and Azure DevOps. He integrates Allure and Extent reports for actionable test dashboards.';
     }
     else if (/bdd|cucumber|gherkin|feature|scenario/.test(t)) {
@@ -3785,7 +3785,9 @@ if (document.readyState === "loading") {
     </div>
     <div id="qabot-messages"></div>
     <div id="qabot-suggestions">
-      <button class="qabot-chip" onclick="qaBotSend('What are his top skills?')">⚗️ Skills</button>
-      <button class="qabot-chip" onclick="qaBotSend('Tell me about his experience')">💼 Experience</button>
-      <button class="qabot-chip" onclick="qaBotSend('What projects has he built?')">💾 Projects</button>
-      <button class="qabot-chip"
+      <button class="qabot-chip" onclick="qaBotSend('What are his top skills?')">Skills</button>
+      <button class="qabot-chip" onclick="qaBotSend('Tell me about experience')">Experience</button>
+      <button class="qabot-chip" onclick="qaBotSend('What projects has he built?')">Projects</button>
+      <button class="qabot-chip" onclick="qaBotSend('Is he available for hire?')">Availability</button>
+    </div>
+    "
