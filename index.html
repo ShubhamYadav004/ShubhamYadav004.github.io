@@ -1719,7 +1719,7 @@ footer { background:var(--bg); padding:2rem; border-top:3px solid rgba(0,0,0,0.1
         </div>
         <div class="contact-desc">Lead Testing Engineer at UST with 5+ years in QA automation. Open to senior QA, test architect &amp; consulting opportunities.</div>
         <div class="contact-links">
-          <a href="/cdn-cgi/l/email-protection#8fece0e1fbeeecfbfcfbe0fce7faede7eee2cfe8e2eee6e3a1ece0e2" class="contact-link">📧 Email</a>
+          <a href="mailto:contactstoshubham@gmail.com" class="contact-link">📧 Email</a>
           <a href="https://linkedin.com/in/contacttoshubham" target="_blank" class="contact-link">💼 LinkedIn</a>
           <a href="tel:+918173859934" class="contact-link">📱 Call</a>
         </div>
@@ -1840,7 +1840,7 @@ footer { background:var(--bg); padding:2rem; border-top:3px solid rgba(0,0,0,0.1
 <footer>
   <div class="footer-inner">
     <div class="footer-big">LET'S BUILD QUALITY TOGETHER</div>
-    <div class="footer-cta"><a href="/cdn-cgi/l/email-protection#d3b0bcbda7b2b0a7a0a7bca0bba6b1bbb2be93b4beb2babffdb0bcbe" class="btn-outline" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.9rem;padding:0.6rem 1.5rem;">📧 <span class="__cf_email__" data-cfemail="4b2824253f2a283f383f2438233e29232a260b2c262a222765282426">[email&#160;protected]</span></a></div>
+    <div class="footer-cta"><a href="mailto:contactstoshubham@gmail.com" class="btn-outline" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.9rem;padding:0.6rem 1.5rem;">📧 contactstoshubham@gmail.com</a></div>
     <div class="footer-row">
       <div>© 2026 Shubham Yadav · All rights reserved.</div>
       <button class="footer-back-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">Back to top ↑</button>
@@ -1848,7 +1848,7 @@ footer { background:var(--bg); padding:2rem; border-top:3px solid rgba(0,0,0,0.1
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 /* ─── SKILLS ─── */
 var skillsData = [
   {
@@ -2622,221 +2622,203 @@ function showAchievement(a) {
    QA BOT — Claude AI powered
 ═══════════════════════════════════════ */
 function initQABot() {
-  var isOpen = false;
+  var isOpen   = false;
   var isTyping = false;
-  var msgHistory = [];
 
-  /* Smart reply engine - no API needed */
-  function smartReply(q) {
-    var t = q.toLowerCase();
-    var r = '';
-
-    if (/skill|tech|stack|tool|framework|selenium|java|rest|api|testng|cucumber|appium|browser|jenkins|jira|allure|postman|karate|automation/.test(t)) {
-      r = 'Shubham is skilled in: Selenium WebDriver, Java, TestNG, Cucumber BDD, REST Assured, Postman, Karate, Appium, BrowserStack, Jenkins, GitHub Actions, Azure DevOps, Git, JIRA, Allure Reports, Extent Reports, Apache POI and SQL. 5+ years of hands-on QA automation!';
-    }
-    else if (/experience|work|job|company|ust|infosys|capgemini|year|role|position|career|history/.test(t)) {
-      r = 'Shubham has 5+ years QA experience: UST as Lead Testing Engineer (Mar 2026-Present), Infosys as Technology Analyst (Jan 2025-Feb 2026), and Capgemini as Senior Analyst (Jun 2021-Dec 2024). All based in Pune!';
-    }
-    else if (/project|github|repo|cucumber|openai|restframe|build/.test(t)) {
-      r = 'Shubham has 3 GitHub projects: CucumberE2E (Selenium + BDD framework), Api_RestFramework (REST Assured API automation with 1 star), and OpenAiAutomation (AI-powered testing). All at github.com/ShubhamYadav004';
-    }
-    else if (/hire|available|open|opportunity|recruit|looking|freelance|consult/.test(t)) {
-      r = 'Yes! Shubham is open to senior QA, Test Architect and consulting opportunities. Currently Lead Testing Engineer at UST. Reach him at contactstoshubham@gmail.com or linkedin.com/in/contacttoshubham';
-    }
-    else if (/contact|email|phone|linkedin|reach|connect|message|call/.test(t)) {
-      r = 'Contact Shubham at: Email contactstoshubham@gmail.com, Phone +91 8173859934, LinkedIn linkedin.com/in/contacttoshubham, GitHub github.com/ShubhamYadav004. Or use the Contact form on this page!';
-    }
-    else if (/education|degree|college|university|cert|aktu|btech|study|qualification/.test(t)) {
-      r = 'Shubham holds B.Tech in Computer Science from AKTU Lucknow (2020). Certifications: Advance Automation Engineer (Capgemini) and Certified API Automation Tester (Capgemini).';
-    }
-    else if (/location|city|where|pune|india|based/.test(t)) {
-      r = 'Shubham is based in Pune, Maharashtra, India.';
-    }
-    else if (/who|about|introduce|shubham|tell me/.test(t)) {
-      r = 'Shubham Yadav is a Lead Testing Engineer with 5+ years in QA Automation. Expert in Selenium, Java, REST Assured and CI/CD. Currently at UST, previously at Infosys and Capgemini. He builds enterprise-grade automation frameworks!';
-    }
-    else if (/current|now|present|today|lead|ust/.test(t)) {
-      r = 'Currently Shubham is Lead Testing Engineer at UST (March 2026-Present) in Pune. He built their automation framework from scratch using Selenium, REST Assured and BrowserStack!';
-    }
-    else if (/salary|package|ctc|pay|money|compensation/.test(t)) {
-      r = 'That is between Shubham and the employer! Best to reach out at contactstoshubham@gmail.com to discuss. He is open to good opportunities!';
-    }
-    else if (/selenium|webdriver|pom|page object|hybrid/.test(t)) {
-      r = 'Shubham is a Selenium expert with 5+ years experience. He uses Page Object Model and Hybrid Framework architecture, builds scalable test suites with TestNG and integrates with Jenkins CI/CD pipelines.';
-    }
-    else if (/mobile|appium|android|browserstack|device/.test(t)) {
-      r = 'For mobile testing, Shubham uses Appium with Android Studio and BrowserStack for real device cloud testing. He has experience with UIAutomator for Android automation.';
-    }
-    else if (/cicd|jenkins|pipeline|devops|azure|github/.test(t)) {
-      r = 'Shubham is experienced with CI/CD using Jenkins pipelines, GitHub Actions workflows and Azure DevOps. He integrates Allure and Extent reports for actionable test dashboards.';
-    }
-    else if (/bdd|cucumber|gherkin|feature|scenario/.test(t)) {
-      r = 'Shubham uses Cucumber BDD with Gherkin feature files to write business-readable test scenarios. This makes test coverage transparent to both technical and non-technical stakeholders.';
-    }
-    else if (/report|allure|extent|dashboard/.test(t)) {
-      r = 'Shubham integrates Allure Reports and Extent Reports for rich test dashboards with step-level details, screenshots on failure and trend analysis. Very useful for stakeholder reporting!';
-    }
-    else if (/sql|database|db|backend|data/.test(t)) {
-      r = 'Shubham performs SQL-based backend validation to verify data integrity and business rules. He uses Apache POI for data-driven testing with Excel-based test parameters.';
-    }
-    else if (/strength|best|good at|expert|master/.test(t)) {
-      r = 'Shubham is strongest in Selenium WebDriver automation, API testing with REST Assured, and building reusable frameworks from scratch. He is also great at BDD with Cucumber and cloud testing with BrowserStack.';
-    }
-    else if (/weakness|challenge|difficult|improve/.test(t)) {
-      r = 'Shubham is always learning! He is currently exploring AI-powered test automation and performance testing. His OpenAI Automation project shows his passion for next-gen QA!';
-    }
-    else if (/hobby|interest|passion|outside|personal/.test(t)) {
-      r = 'Outside work, Shubham is passionate about exploring new automation tools and contributing to quality engineering. He built 3 open-source projects on GitHub to share his knowledge!';
-    }
-    else if (/language|programming|code|coding/.test(t)) {
-      r = 'Shubham primarily codes in Java for test automation. He works with frameworks like Selenium, TestNG, Cucumber, REST Assured and Maven/Gradle build tools.';
-    }
-    else if (/framework|build|architect|design|structure/.test(t)) {
-      r = 'Shubham specializes in building automation frameworks from scratch using Page Object Model and Hybrid architecture in Java. He focuses on reusability, maintainability and CI/CD integration.';
-    }
-    else if (/game|slot|play|fun|retro/.test(t)) {
-      r = 'You noticed the games! Shubham has QA Bug Blaster and a QA Slot Machine on this portfolio. Try them out - they are built with pure canvas JavaScript!';
-    }
-    else if (/portfolio|website|site|page/.test(t)) {
-      r = 'This retro gaming portfolio was built with pure HTML, CSS and JavaScript - no frameworks! It features dark mode, animations, a switchboard experience section, slot machine and this AI bot!';
-    }
-    else if (/hi|hello|hey|hii|sup|howdy/.test(t)) {
-      r = 'Hey there! I am QA Bot, Shubham personal assistant. Ask me about his skills, experience, projects, or how to hire him!';
-    }
-    else if (/thank|thanks|thx|awesome|great|cool|nice|good/.test(t)) {
-      r = 'You are welcome! Feel free to ask anything else about Shubham. Or jump to the Contact section to reach him directly!';
-    }
-    else if (/bye|goodbye|see you|later|cya/.test(t)) {
-      r = 'Goodbye! Feel free to come back anytime. You can also reach Shubham at contactstoshubham@gmail.com. Have a great day!';
-    }
-    else {
-      var fb = [
-        'Great question! Try asking about skills, experience, projects or how to contact Shubham!',
-        'I know everything about Shubham QA skills and career. Try asking about his experience or projects!',
-        'Ask me about skills, frameworks, work history, projects or how to hire Shubham!',
-        'Not sure about that one! I am best at answering about Shubham QA expertise and career.',
-        'Try asking: What are his skills? or Tell me about his experience!'
-      ];
-      r = fb[Math.floor(Math.random() * fb.length)];
-    }
-    return r;
-  }
-
-  /* DOM refs */
   var btn     = document.getElementById('qabot-btn');
-  var window_ = document.getElementById('qabot-window');
+  var win     = document.getElementById('qabot-window');
   var msgs    = document.getElementById('qabot-messages');
-  var input   = document.getElementById('qabot-input');
-  var sendBtn = document.getElementById('qabot-send');
-  var closeBtn= document.getElementById('qabot-close');
+  var inp     = document.getElementById('qabot-input');
+  var sndBtn  = document.getElementById('qabot-send');
+  var closeB  = document.getElementById('qabot-close');
   var notif   = document.getElementById('qabot-notif');
   var sugg    = document.getElementById('qabot-suggestions');
 
-  if (!btn) return;
+  if (!btn || !win || !inp) { return; }
 
-  /* Open / close */
+  /* ── Open / Close ── */
   btn.addEventListener('click', function() {
     isOpen = !isOpen;
-    window_.classList.toggle('open', isOpen);
+    win.classList.toggle('open', isOpen);
     if (isOpen) {
       if (notif) notif.style.display = 'none';
-      if (msgs.children.length === 0) showWelcome();
+      if (msgs.children.length === 0) addMsg('bot', 'Hey! I am QA Bot. Ask me anything about Shubham skills, experience, projects or how to hire him!');
       if (sugg) sugg.style.display = 'flex';
-      setTimeout(function(){ if(input) input.focus(); }, 300);
+      setTimeout(function() { inp.focus(); }, 300);
     }
   });
-  if (closeBtn) closeBtn.addEventListener('click', function() {
-    isOpen = false; window_.classList.remove('open');
+
+  if (closeB) closeB.addEventListener('click', function() {
+    isOpen = false; win.classList.remove('open');
   });
 
-  /* Enter key */
-  if (input) input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); qaBotSend(); }
+  /* ── Send on Enter ── */
+  inp.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); doSend(); }
   });
-  if (sendBtn) sendBtn.addEventListener('click', function() { qaBotSend(); });
 
-  /* Welcome message */
-  function showWelcome() {
-    addMsg('bot', 'Hey! I am QA Bot! Ask me about Shubham skills, experience, projects, or if he is available for hire!');
-  }
+  /* ── Send on button click ── */
+  if (sndBtn) sndBtn.addEventListener('click', function() { doSend(); });
 
-  /* Add message bubble */
+  /* ── Add message ── */
   function addMsg(role, text) {
-    var row = document.createElement('div');
+    var row    = document.createElement('div');
     row.className = 'qabot-msg ' + role;
-    var avatar = document.createElement('span');
-    avatar.className = 'qabot-msg-avatar';
-    avatar.textContent = role === 'bot' ? '🤖' : '👤';
-    var bubble = document.createElement('div');
-    bubble.className = 'qabot-bubble';
-    bubble.textContent = text;
-    if (role === 'bot') { row.appendChild(avatar); row.appendChild(bubble); }
-    else { row.appendChild(bubble); row.appendChild(avatar); }
+    var av     = document.createElement('span');
+    av.className = 'qabot-msg-avatar';
+    av.textContent = role === 'bot' ? '🤖' : '👤';
+    var bub    = document.createElement('div');
+    bub.className = 'qabot-bubble';
+    bub.textContent = text;
+    if (role === 'bot') { row.appendChild(av); row.appendChild(bub); }
+    else                { row.appendChild(bub); row.appendChild(av); }
     msgs.appendChild(row);
     msgs.scrollTop = msgs.scrollHeight;
-    return bubble;
   }
 
-  /* Typing indicator */
+  /* ── Typing dots ── */
   function showTyping() {
     var row = document.createElement('div');
     row.className = 'qabot-msg bot'; row.id = 'qabot-typing-row';
-    var avatar = document.createElement('span');
-    avatar.className = 'qabot-msg-avatar'; avatar.textContent = '🤖';
-    var bubble = document.createElement('div');
-    bubble.className = 'qabot-bubble qabot-typing';
-    bubble.innerHTML = '<span></span><span></span><span></span>';
-    row.appendChild(avatar); row.appendChild(bubble);
+    var av  = document.createElement('span');
+    av.className = 'qabot-msg-avatar'; av.textContent = '🤖';
+    var bub = document.createElement('div');
+    bub.className = 'qabot-bubble qabot-typing';
+    bub.innerHTML = '<span></span><span></span><span></span>';
+    row.appendChild(av); row.appendChild(bub);
     msgs.appendChild(row);
     msgs.scrollTop = msgs.scrollHeight;
   }
   function hideTyping() {
-    var row = document.getElementById('qabot-typing-row');
-    if (row) row.parentNode.removeChild(row);
+    var r = document.getElementById('qabot-typing-row');
+    if (r) r.parentNode.removeChild(r);
   }
 
-  /* Send a message */
-  window.qaBotSend = function(presetText) {
-    var text = presetText || (input ? input.value.trim() : '');
-    if (!text || isTyping) return;
-    if (input) input.value = '';
-    if (sugg) sugg.style.display = 'none';
+  /* ── Smart replies ── */
+  function getReply(q) {
+    var t = q.toLowerCase();
 
+    if (/skill|selenium|java|testng|cucumber|rest|api|postman|karate|appium|browser|jenkins|jira|allure|extent|poi|sql|uiautomator|pom|hybrid|bdd|tdd/.test(t))
+      return 'Shubham is expert in: Selenium WebDriver, Java, TestNG, Cucumber BDD, REST Assured, Postman, Karate, Appium, BrowserStack, Jenkins, GitHub Actions, Azure DevOps, Git, JIRA, Allure, Extent Reports, Apache POI, SQL and UIAutomator. 5 plus years of hands-on QA automation!';
+
+    if (/experience|work|company|ust|infosys|capgemini|year|career|history|role/.test(t))
+      return 'Shubham has 5 plus years QA experience. UST as Lead Testing Engineer from March 2026 to Present. Infosys as Technology Analyst from Jan 2025 to Feb 2026. Capgemini as Senior Analyst from Jun 2021 to Dec 2024. All based in Pune India.';
+
+    if (/project|github|repo|cucumber|openai|framework|build/.test(t))
+      return 'Shubham has 3 GitHub projects: CucumberE2E (Selenium plus BDD end to end framework), Api RestFramework (REST Assured API automation with 1 star), and OpenAiAutomation (AI powered test automation). All at github.com/ShubhamYadav004';
+
+    if (/hire|available|open|opportunity|recruit|looking|freelance|consult|job/.test(t))
+      return 'Yes! Shubham is open to senior QA, Test Architect and consulting opportunities. Currently Lead Testing Engineer at UST. Contact him at contactstoshubham@gmail.com or linkedin.com/in/contacttoshubham';
+
+    if (/contact|email|phone|linkedin|reach|connect|call/.test(t))
+      return 'Contact Shubham at: Email contactstoshubham@gmail.com, Phone plus 91 8173859934, LinkedIn linkedin.com/in/contacttoshubham, GitHub github.com/ShubhamYadav004. Or use the Contact section on this page!';
+
+    if (/education|degree|college|aktu|btech|cert|qualification/.test(t))
+      return 'Shubham holds B.Tech in Computer Science from AKTU Lucknow 2020. Certifications: Advance Automation Engineer and Certified API Automation Tester, both from Capgemini.';
+
+    if (/location|city|where|pune|india|based/.test(t))
+      return 'Shubham is based in Pune, Maharashtra, India.';
+
+    if (/who|about|introduce|shubham|yourself/.test(t))
+      return 'Shubham Yadav is a Lead Testing Engineer with 5 plus years in QA Automation. Expert in Selenium, Java, REST Assured and CI CD pipelines. Currently at UST, previously at Infosys and Capgemini. He builds enterprise-grade test frameworks from scratch!';
+
+    if (/current|now|present|ust|lead/.test(t))
+      return 'Currently Shubham is Lead Testing Engineer at UST since March 2026 in Pune. He built the automation framework from scratch using Selenium, REST Assured, BrowserStack and Allure Reports.';
+
+    if (/salary|package|ctc|pay|compensation/.test(t))
+      return 'That is between Shubham and the employer! Reach out at contactstoshubham@gmail.com to discuss. He is open to great opportunities!';
+
+    if (/selenium|webdriver|pom|page object|hybrid/.test(t))
+      return 'Shubham has 5 plus years of Selenium WebDriver expertise. He designs frameworks using Page Object Model and Hybrid architecture in Java with TestNG for parallel execution and cross-browser testing.';
+
+    if (/mobile|appium|android|device/.test(t))
+      return 'For mobile testing Shubham uses Appium with Android Studio and BrowserStack for real device cloud testing. He also uses UIAutomator for native Android automation.';
+
+    if (/jenkins|pipeline|github action|azure devops|cicd|ci cd/.test(t))
+      return 'Shubham integrates automation suites with Jenkins scheduled pipelines, GitHub Actions workflows and Azure DevOps. He publishes Allure and Extent Reports as build artifacts for stakeholders.';
+
+    if (/bdd|cucumber|gherkin|feature|scenario/.test(t))
+      return 'Shubham writes BDD test scenarios using Cucumber with Gherkin feature files. This makes test coverage readable for both developers and business stakeholders without technical knowledge.';
+
+    if (/report|allure|extent|dashboard/.test(t))
+      return 'Shubham integrates Allure Reports and Extent Reports providing rich dashboards with step details, failure screenshots and trend charts. Very useful for sprint demos and stakeholder reviews.';
+
+    if (/sql|database|backend|data validation/.test(t))
+      return 'Shubham performs SQL backend validation to verify data integrity and business rules in test environments. He also uses Apache POI for data-driven testing with Excel parameters.';
+
+    if (/strength|best|expert|good at|master|specializ/.test(t))
+      return 'Shubham is strongest in Selenium framework design, API automation with REST Assured, BDD with Cucumber and cloud testing with BrowserStack. He excels at building scalable frameworks from scratch.';
+
+    if (/game|slot|play|bug blaster|retro/.test(t))
+      return 'You noticed the games! The portfolio has QA Bug Blaster where you shoot falling bugs, and a QA Slot Machine with QA-themed symbols. Both built with pure JavaScript canvas!';
+
+    if (/portfolio|website|site|how made|built with/.test(t))
+      return 'This retro gaming portfolio is built with pure HTML, CSS and JavaScript, no frameworks needed! It features dark mode, animations, switchboard experience section, slot machine, and this smart bot!';
+
+    if (/lang|programming|code|java|coding/.test(t))
+      return 'Shubham primarily codes in Java for automation. He works with Selenium, TestNG, Cucumber, REST Assured, Maven and integrates with CI CD tools like Jenkins and GitHub Actions.';
+
+    if (/hi|hello|hey|hii|howdy|good morning|good afternoon|good evening/.test(t))
+      return 'Hey there! I am QA Bot, Shubham personal assistant. Ask me about his skills, experience, projects, or how to contact him for work opportunities!';
+
+    if (/thank|thanks|awesome|great|cool|nice|good/.test(t))
+      return 'You are welcome! Feel free to ask anything else about Shubham. You can also reach him directly at contactstoshubham@gmail.com';
+
+    if (/bye|goodbye|see you|later/.test(t))
+      return 'Goodbye! Feel free to come back anytime. You can also reach Shubham at contactstoshubham@gmail.com Have a great day!';
+
+    if (/apium|appiium/.test(t))
+      return 'Did you mean Appium? Shubham uses Appium for mobile test automation on Android with BrowserStack real device cloud.';
+
+    if (/notice|period|joining|start|when can/.test(t))
+      return 'For joining and notice period details, please contact Shubham directly at contactstoshubham@gmail.com or call plus 91 8173859934.';
+
+    if (/agile|scrum|sprint|standup|ceremony/.test(t))
+      return 'Shubham actively participates in Agile and Scrum ceremonies including sprint planning, daily standups, retrospectives and stakeholder demos. He has worked in Agile teams across all 3 companies.';
+
+    if (/defect|bug|jira|track|management/.test(t))
+      return 'Shubham manages the full defect lifecycle in JIRA from logging and triaging to coordinating with dev teams for resolution. He tracks test metrics and defect trends across sprints.';
+
+    var fallbacks = [
+      'I know everything about Shubham! Try asking about skills, experience, projects or how to hire him.',
+      'Ask me about Shubham QA skills, work experience, GitHub projects or contact details!',
+      'Great question! Try asking about his Selenium expertise, API testing, or current job role.',
+      'Not sure about that. Try: What are his skills? or Tell me about his experience!'
+    ];
+    return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+  }
+
+  /* ── Core send function ── */
+  function doSend() {
+    var text = inp.value.trim();
+    if (!text || isTyping) return;
+    inp.value = '';
+    if (sugg) sugg.style.display = 'none';
     addMsg('user', text);
-    msgHistory.push({ role: 'user', content: text });
     isTyping = true;
     showTyping();
-
-    /* Strip markdown formatting from bot reply */
-    function cleanMarkdown(text) {
-      return text
-        .replace(/\*\*(.+?)\*\*/g, '$1')   /* **bold** */
-        .replace(/\*(.+?)\*/g, '$1')         /* *italic* */
-        .replace(/`(.+?)`/g, '$1')            /* `code` */
-        .replace(/^#{1,3}\s+/gm, '')         /* ### headings */
-        .replace(/^[-*]\s+/gm, '• ')         /* - list items */
-        .replace(/\n{3,}/g, '\n\n')          /* triple newlines */
-        .trim();
-    }
-
-    /* Smart local response engine — no API needed */
     setTimeout(function() {
       hideTyping();
       isTyping = false;
-      var reply = smartReply(text);
-      addMsg('bot', reply);
-    }, 700 + Math.random() * 400);
+      addMsg('bot', getReply(text));
+    }, 600 + Math.random() * 500);
+  }
+
+  /* ── Expose for chip buttons ── */
+  window.qaBotSend = function(preset) {
+    if (preset) inp.value = preset;
+    doSend();
   };
 
-  /* Auto-open after 12 seconds with a notification */
+  /* ── Notification badge after 12s ── */
   setTimeout(function() {
-    if (!isOpen && notif) { notif.style.display = 'flex'; }
+    if (!isOpen && notif) notif.style.display = 'flex';
   }, 12000);
-
 }
+
 /* Run after full DOM is ready */
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initQABot);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initQABot);
 } else {
   setTimeout(initQABot, 200);
 }
