@@ -2757,7 +2757,7 @@ function initQABot() {
 
   /* Welcome message */
   function showWelcome() {
-    addMsg('bot', "Hey! I'm QA Bot 🤖 — Shubham's AI assistant. Ask me anything about his skills, experience, projects, or if he's available for hire!");
+    addMsg('bot', 'Hey! I am QA Bot! Ask me about Shubham skills, experience, projects, or if he is available for hire!');
   }
 
   /* Add message bubble */
@@ -3790,4 +3790,9 @@ if (document.readyState === "loading") {
       <button class="qabot-chip" onclick="qaBotSend('What projects has he built?')">Projects</button>
       <button class="qabot-chip" onclick="qaBotSend('Is he available for hire?')">Availability</button>
     </div>
-    "
+    <div id="qabot-input-wrap">
+      <input id="qabot-input" type="text" placeholder="Ask anything about Shubham..." maxlength="200"/>
+      <button id="qabot-send">&#9658;</button>
+    </div>
+  </div>
+</div>
