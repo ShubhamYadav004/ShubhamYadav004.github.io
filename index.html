@@ -111,9 +111,31 @@ body.c-text  #cursor-ring { width:3px; height:28px; border-radius:2px; border-co
 .rct-wrap { overflow:visible; }
 .rct-milestone { transition:none !important; }
 @keyframes rct-pulse { 0%,100%{opacity:.6;transform:scale(1);}50%{opacity:1;transform:scale(1.3);} }
-.rct-pulse       { animation:rct-pulse 2.2s ease-in-out infinite; transform-origin:200px 60px; transform-box:fill-box; }
-.rct-pulse-blue  { animation:rct-pulse 2.4s ease-in-out infinite; transform-origin:510px 128px; transform-box:fill-box; }
-.rct-pulse-gold  { animation:rct-pulse 2s   ease-in-out infinite; transform-origin:950px 90px;  transform-box:fill-box; }
+/* pulse animations removed */
+
+/* ── RACE HISTORY MILESTONES ── */
+@keyframes ms-ring-pulse {
+  0%   { r:16; opacity:0.8; }
+  100% { r:32; opacity:0; }
+}
+@keyframes ms-burst {
+  0%   { r:10; opacity:1; stroke-width:3; }
+  100% { r:34; opacity:0; stroke-width:0.5; }
+}
+/* hover: ring pulses continuously */
+.rct-milestone:hover .ms-ring {
+  animation: ms-ring-pulse 1s ease-out infinite;
+}
+/* click: burst ring expands once */
+.rct-milestone .burst-ring {
+  animation: ms-burst 0.5s ease-out forwards;
+}
+/* milestone dot brightens on hover */
+.rct-milestone { cursor:pointer; }
+.rct-milestone:hover circle:not(.ms-ring):not([id^="ring"]) {
+  filter: brightness(1.4);
+}
+
 
 .guide-row { display:flex; align-items:center; gap:9px; padding:7px 8px; border-radius:9px; cursor:pointer; transition:background .18s; }
 .guide-row:hover { background:rgba(255,255,255,0.05); }
@@ -703,6 +725,12 @@ window.setTeam = function(theme) { applyTeam(theme, false); };
       var f = document.getElementById('mode-flash');
       if(f){ f.classList.add('flash'); setTimeout(function(){ f.classList.remove('flash'); }, 200); }
     }
+    /* Redraw canvas elements that use hardcoded colors */
+    setTimeout(function(){
+      /* radar */
+      var radarCanvas = document.getElementById('skills-radar');
+      if(radarCanvas) radarCanvas.dispatchEvent(new Event('redraw'));
+    }, 50);
   }
 
   window.toggleDarkMode = function(){
@@ -734,19 +762,148 @@ window.setTeam = function(theme) { applyTeam(theme, false); };
 @keyframes vt-in {from{opacity:0;transform:scale(1.01)}}
 
 /* ── LIGHT MODE OVERRIDE ── */
+/* ═══════════════════════════════════════════
+   LIGHT MODE — comprehensive overrides
+   ═══════════════════════════════════════════ */
 html[data-mode="light"] {
-  --bg:#f5f5f7; --bg1:#ffffff; --bg2:#e8e8ed; --surface:#ffffff;
-  --border:rgba(0,0,0,0.1); --border2:rgba(0,0,0,0.16);
-  --text:#1d1d1f; --text2:#515154; --text3:#86868b; --text4:#d2d2d7;
-  --nav-bg:rgba(245,245,247,0.92); --mob-bg:rgba(245,245,247,0.97);
-  --grid-line:rgba(0,0,0,0.04);
-  color-scheme: light;
+  --bg:#f2f2f7; --bg1:#ffffff; --bg2:#e5e5ea; --surface:#ffffff;
+  --border:rgba(0,0,0,0.1); --border2:rgba(0,0,0,0.18);
+  --text:#1d1d1f; --text2:#3a3a3c; --text3:#636366; --text4:#aeaeb2;
+  --nav-bg:rgba(242,242,247,0.92); --mob-bg:rgba(242,242,247,0.97);
+  --grid-line:rgba(0,0,0,0.05);
+  color-scheme:light;
 }
+
+/* ── Body & base ── */
 html[data-mode="light"] body { background:var(--bg); color:var(--text); }
+
+/* ── Navbar ── */
+html[data-mode="light"] #navbar.scrolled { background:var(--nav-bg); }
+html[data-mode="light"] .nav-hamburger span { background:var(--text); }
+
+/* ── Cursor ── */
 html[data-mode="light"] #cursor-ring { border-color:rgba(var(--accent-rgb,232,0,29),0.5); }
-html[data-mode="light"] .hero-glow { opacity:0.5; }
-html[data-mode="light"] #hero-3d-canvas { opacity:0.6; }
-html[data-mode="light"] #f1c { background:#e8e8e8!important; }
+
+/* ── Hero ── */
+html[data-mode="light"] .hero-glow { opacity:0.3; }
+html[data-mode="light"] #hero-3d-canvas { opacity:0.55; }
+html[data-mode="light"] .hero-grid { opacity:0.6; }
+/* Speed lines invisible in light - remove them */
+html[data-mode="light"] .speedline { display:none; }
+/* Hero badge */
+html[data-mode="light"] .hero-badge { background:rgba(var(--accent-rgb,232,0,29),0.08); border-color:rgba(var(--accent-rgb,232,0,29),0.25); }
+html[data-mode="light"] .hero-badge, html[data-mode="light"] .hero-sub { color:var(--text2); }
+html[data-mode="light"] .hero-sub strong { color:var(--text); }
+/* Scroll hint */
+html[data-mode="light"] .scroll-mouse { border-color:var(--text4); }
+/* Hero guide popup - fix dark bg with white text */
+html[data-mode="light"] #hero-guide > div { background:rgba(255,255,255,0.95)!important; border-color:rgba(0,0,0,0.12)!important; box-shadow:0 6px 24px rgba(0,0,0,0.15)!important; }
+html[data-mode="light"] .guide-title-sm { color:rgba(0,0,0,0.7)!important; }
+html[data-mode="light"] .guide-sub-sm { color:rgba(0,0,0,0.4)!important; }
+html[data-mode="light"] .guide-arr-sm { color:rgba(0,0,0,0.25)!important; }
+html[data-mode="light"] .guide-row:hover { background:rgba(0,0,0,0.04)!important; }
+
+/* ── Ticker ── */
+/* Ticker stays accent-bg with white text - intentional, fine */
+
+/* ── Sector banner ── */
+html[data-mode="light"] .sector-banner { background:var(--bg2); }
+html[data-mode="light"] .sector-val { color:var(--text); }
+
+/* ── About ── */
+html[data-mode="light"] #about { background:var(--bg1); }
+html[data-mode="light"] .pillar-card { background:var(--bg2); border-color:var(--border); }
+html[data-mode="light"] .pillar-card:hover { background:var(--bg1); }
+html[data-mode="light"] .pillar-title { color:var(--text); }
+html[data-mode="light"] .pillar-desc { color:var(--text3); }
+
+/* ── DRS dividers ── */
+html[data-mode="light"] .drs-divider { background:var(--bg2); }
+
+/* ── Skills ── */
+html[data-mode="light"] #sk-card { background:var(--bg1); border-color:var(--border2); }
+html[data-mode="light"] .sk-equip-pill { background:var(--bg2); border-color:var(--border2); color:var(--text); }
+html[data-mode="light"] .sk-achieve { background:var(--bg2); border-color:var(--border); color:var(--text2); }
+html[data-mode="light"] .sk-class-card { background:var(--bg1); border-color:var(--border2); }
+html[data-mode="light"] .sk-class-card.active { background:rgba(var(--accent-rgb,232,0,29),0.05); }
+html[data-mode="light"] .sk-class-name { color:var(--text); }
+html[data-mode="light"] .sk-class-count { color:var(--text3); }
+html[data-mode="light"] .sk-tab { background:var(--bg1); border-color:var(--border2); color:var(--text2); }
+
+/* ── Projects terminal — keep dark, intentional ── */
+html[data-mode="light"] #proj-panel { background:var(--bg2); }
+html[data-mode="light"] .proj-item { background:var(--bg1); border-color:var(--border2); }
+html[data-mode="light"] .proj-name { color:var(--text2); }
+
+/* ── Experience ── */
+html[data-mode="light"] .exp-nav-company { color:var(--text3); }
+html[data-mode="light"] .exp-nav-item.active .exp-nav-company { color:var(--text); }
+html[data-mode="light"] .race-pos-card { background:var(--bg2); border-color:var(--border); }
+
+/* ── Experience modal ── */
+html[data-mode="light"] #exp-modal { background:var(--bg1); border-color:var(--border2); }
+html[data-mode="light"] #exp-modal-overlay { background:rgba(0,0,0,0.4); }
+html[data-mode="light"] #modal-title { color:var(--text); }
+html[data-mode="light"] #modal-sub { color:var(--text2); }
+
+/* ── Skills radar section ── */
+html[data-mode="light"] #skills-radar-section { background:var(--bg2); }
+
+/* ── GitHub section ── */
+html[data-mode="light"] #github-section { background:var(--bg1); }
+html[data-mode="light"] #gh-stats-wrap [style*="background:var(--surface)"] { background:var(--bg2)!important; }
+
+/* ── Contact form ── */
+html[data-mode="light"] .form-input,
+html[data-mode="light"] .form-textarea { background:var(--bg2); border-color:var(--border2); color:var(--text); }
+html[data-mode="light"] .form-input::placeholder,
+html[data-mode="light"] .form-textarea::placeholder { color:var(--text3); }
+html[data-mode="light"] .channel-icon { background:var(--bg2); border-color:var(--border); }
+
+/* ── CLI overlay — always dark terminal, intentional ── */
+/* Keep CLI dark — it's a terminal, should always be dark */
+
+/* ── Pit crew chatbot ── */
+html[data-mode="light"] #pit-panel { background:var(--bg1); border-color:var(--border2); }
+html[data-mode="light"] .pit-header { background:rgba(var(--accent-rgb,232,0,29),0.06); border-color:var(--border); }
+html[data-mode="light"] .pit-messages { background:var(--bg1); }
+html[data-mode="light"] .msg.bot .msg-bubble { background:var(--bg2); border-color:var(--border); color:var(--text); }
+html[data-mode="light"] .pit-name { color:var(--text); }
+html[data-mode="light"] .pit-status { color:#16a34a; }
+html[data-mode="light"] .pit-input { background:var(--bg2); border-color:var(--border2); color:var(--text); }
+html[data-mode="light"] .pit-input::placeholder { color:var(--text3); }
+html[data-mode="light"] .pit-input-bar { background:var(--bg2); border-color:var(--border); }
+html[data-mode="light"] .pit-quick-btns { background:var(--bg1); border-color:var(--border); }
+html[data-mode="light"] .typing-indicator { background:var(--bg2); border-color:var(--border); }
+html[data-mode="light"] .typing-dot { background:var(--text3); }
+
+/* ── Mobile nav ── */
+html[data-mode="light"] #mobile-nav { background:var(--mob-bg); }
+html[data-mode="light"] #mobile-nav a { color:var(--text); }
+
+/* ── Scroll wheel ── */
+html[data-mode="light"] #scroll-wheel { filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15)); }
+html[data-mode="light"] #scroll-pct { color:var(--text3); }
+
+/* ── Footer ── */
+html[data-mode="light"] footer { background:var(--bg1); border-color:var(--border); }
+html[data-mode="light"] .footer-brand,
+html[data-mode="light"] .footer-tagline { color:var(--text); }
+html[data-mode="light"] .footer-links a { color:var(--text3); }
+html[data-mode="light"] .footer-copy { color:var(--text3); }
+html[data-mode="light"] .social-link { background:var(--bg2); border-color:var(--border); }
+
+/* ── Game section — always dark, intentional ── */
+html[data-mode="light"] #game { background:#0d0d0d; }
+html[data-mode="light"] #g-hud-top { background:#080808; }
+html[data-mode="light"] #g-footer-bar { background:#060606; }
+html[data-mode="light"] #g-ov { background:rgba(0,0,0,0.88); }
+
+/* ── Mode flash ── */
+html[data-mode="light"] #mode-flash { background:#000; }
+
+/* ── Dark mode toggle icon in light ── */
+html[data-mode="light"] #dm-toggle { background:var(--bg2); border-color:var(--border2); }
 
 /* Dark/Light toggle button */
 #dm-toggle {
@@ -1095,66 +1252,96 @@ html[data-mode="light"] #f1c { background:#e8e8e8!important; }
     <h2 class="section-title reveal" style="margin-bottom:16px;">RACE<br><span class="red">HISTORY</span></h2>
     <p style="font-family:var(--ff-m);font-size:11px;letter-spacing:.12em;color:var(--text3);margin-bottom:56px;">CLICK A MILESTONE TO VIEW FULL DETAILS</p>
     <div class="rct-wrap reveal">
-      <svg id="rct-svg" viewBox="0 0 1100 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible;">
+      <svg id="rct-svg" viewBox="0 0 1100 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;overflow:visible;">
         <defs>
-          <linearGradient id="rct-grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.2"/><stop offset="30%" stop-color="var(--accent)"/><stop offset="70%" stop-color="var(--accent)"/><stop offset="100%" stop-color="var(--accent)" stop-opacity="0.2"/></linearGradient>
+          <linearGradient id="rct-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="var(--accent)" stop-opacity="0.2"/>
+            <stop offset="30%"  stop-color="var(--accent)"/>
+            <stop offset="70%"  stop-color="var(--accent)"/>
+            <stop offset="100%" stop-color="var(--accent)" stop-opacity="0.2"/>
+          </linearGradient>
           <filter id="rct-glow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="rct-glow2"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <g id="f1car-red2">
-            <ellipse cx="2" cy="0" rx="14" ry="5" fill="var(--accent)"/>
-            <polygon points="16,0 10,3 10,-3" fill="#cc0000"/>
-            <rect x="-13" y="-7" width="4" height="14" rx="1" fill="#b00015" opacity=".9"/>
-            <ellipse cx="2" cy="0" rx="5" ry="3" fill="#1a1a1a" opacity=".85"/>
-            <ellipse cx="8"  cy="-6" rx="3.5" ry="2.5" fill="#111"/>
-            <ellipse cx="8"  cy="6"  rx="3.5" ry="2.5" fill="#111"/>
-            <ellipse cx="-8" cy="-6" rx="3.5" ry="2.5" fill="#111"/>
-            <ellipse cx="-8" cy="6"  rx="3.5" ry="2.5" fill="#111"/>
-          </g>
+          <!-- F1 car symbol — centred at 0,0 so animateMotion positions it correctly -->
+          <symbol id="f1car-sym" viewBox="-16 -8 32 16" width="32" height="16">
+            <ellipse cx="0" cy="0" rx="14" ry="5" fill="var(--accent)"/>
+            <polygon points="14,0 8,3 8,-3" fill="#cc0000"/>
+            <rect x="-14" y="-7" width="4" height="14" rx="1" fill="#b00015" opacity=".9"/>
+            <ellipse cx="0" cy="0" rx="5" ry="3" fill="#1a1a1a" opacity=".85"/>
+            <ellipse cx="7"  cy="-5" rx="3" ry="2" fill="#111"/>
+            <ellipse cx="7"  cy="5"  rx="3" ry="2" fill="#111"/>
+            <ellipse cx="-7" cy="-5" rx="3" ry="2" fill="#111"/>
+            <ellipse cx="-7" cy="5"  rx="3" ry="2" fill="#111"/>
+          </symbol>
         </defs>
-        <path d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60" fill="none" stroke="rgba(40,40,40,0.7)" stroke-width="44" stroke-linecap="round"/>
-        <path d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="30" stroke-linecap="round"/>
-        <path d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" stroke-dasharray="14,12" stroke-linecap="round"/>
-        <path id="rct-line" d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60" fill="none" stroke="url(#rct-grad)" stroke-width="2.5" stroke-linecap="round" filter="url(#rct-glow2)" stroke-dasharray="3000" stroke-dashoffset="3000" style="animation:draw-track 2.8s ease forwards;"/>
-        <line x1="180" y1="60" x2="180" y2="28" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
-        <text x="180" y="20" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2021</text>
-        <line x1="480" y1="97" x2="480" y2="60" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- Track base — dark tarmac -->
+        <path d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60"
+              fill="none" stroke="rgba(40,40,40,0.8)" stroke-width="44" stroke-linecap="round"/>
+        <!-- Track centre line (dashed) -->
+        <path d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60"
+              fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5" stroke-dasharray="14,12" stroke-linecap="round"/>
+        <!-- Animated accent line (no glow filter) -->
+        <path id="rct-line"
+              d="M60 180 Q60 60 200 60 L400 60 Q500 60 520 130 Q540 200 640 200 L800 200 Q900 200 920 130 Q940 60 1040 60"
+              fill="none" stroke="url(#rct-grad)" stroke-width="2.5" stroke-linecap="round"
+              stroke-dasharray="3000" stroke-dashoffset="3000"
+              style="animation:draw-track 2.8s ease forwards;"/>
+
+        <!-- Year markers -->
+        <line x1="180" y1="60" x2="180" y2="28" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="180" y="22" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2021</text>
+        <line x1="480" y1="97" x2="480" y2="60" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3,3"/>
         <text x="480" y="52" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2024</text>
-        <line x1="720" y1="200" x2="720" y2="240" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
-        <text x="720" y="254" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2025</text>
-        <line x1="980" y1="76" x2="980" y2="28" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,3"/>
-        <text x="980" y="20" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2026</text>
-        <!-- Milestones -->
-        <g class="rct-milestone" data-exp="0" style="cursor:pointer;" onclick="openExpModal(0)">
-          <circle cx="200" cy="60" r="18" fill="rgba(var(--accent-rgb,232,0,29),0.15)" stroke="var(--accent)" stroke-width="2" filter="url(#rct-glow)" class="rct-pulse"/>
-          <circle cx="200" cy="60" r="10" fill="var(--accent)"/>
+        <line x1="720" y1="200" x2="720" y2="244" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="720" y="256" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2025</text>
+        <line x1="980" y1="76" x2="980" y2="28" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="980" y="22" font-family="monospace" font-size="10" fill="rgba(255,255,255,0.3)" text-anchor="middle">2026</text>
+
+        <!-- S/F line -->
+        <rect x="50" y="148" width="4" height="36" fill="white" opacity=".4" rx="1"/>
+        <text x="30" y="168" font-family="monospace" font-size="9" fill="#666" text-anchor="middle">S/F</text>
+
+        <!-- ═══ MILESTONE 0 — CAPGEMINI ═══ -->
+        <g class="rct-milestone" data-exp="0" onclick="openExpModal(0)" style="cursor:pointer;">
+          <!-- hover ring (CSS animated) -->
+          <circle class="ms-ring" cx="200" cy="60" r="16" fill="none" stroke="var(--accent)" stroke-width="1.5" opacity="0"/>
+          <!-- solid dot -->
+          <circle cx="200" cy="60" r="10" fill="var(--accent)" filter="url(#rct-glow)"/>
           <text x="200" y="64" font-family="monospace" font-size="10" fill="white" text-anchor="middle" font-weight="bold">P3</text>
-          <line x1="200" y1="42" x2="200" y2="15" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
-          <rect x="200" y="6" width="52" height="18" rx="3" fill="#1c1c1e" stroke="rgba(var(--accent-rgb,232,0,29),0.6)" stroke-width="1"/>
-          <text x="226" y="18" font-family="monospace" font-size="8.5" fill="var(--accent)" text-anchor="middle" font-weight="bold">CAPGEMINI</text>
+          <!-- connector + label -->
+          <line x1="200" y1="50" x2="200" y2="18" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          <rect x="174" y="4" width="78" height="18" rx="3" fill="#1c1c1e" stroke="rgba(var(--accent-rgb,232,0,29),0.6)" stroke-width="1"/>
+          <text x="213" y="16" font-family="monospace" font-size="8.5" fill="var(--accent)" text-anchor="middle" font-weight="bold">CAPGEMINI</text>
+          <!-- click-burst ring -->
+          <circle id="ring0" cx="200" cy="60" r="10" fill="none" stroke="var(--accent)" stroke-width="2" opacity="0"/>
         </g>
-        <g class="rct-milestone" data-exp="1" style="cursor:pointer;" onclick="openExpModal(1)">
-          <circle cx="510" cy="128" r="18" fill="rgba(0,87,255,0.15)" stroke="#0057ff" stroke-width="2" filter="url(#rct-glow)" class="rct-pulse-blue"/>
-          <circle cx="510" cy="128" r="10" fill="#0057ff"/>
+
+        <!-- ═══ MILESTONE 1 — INFOSYS ═══ -->
+        <g class="rct-milestone" data-exp="1" onclick="openExpModal(1)" style="cursor:pointer;">
+          <circle class="ms-ring" cx="510" cy="128" r="16" fill="none" stroke="#0057ff" stroke-width="1.5" opacity="0"/>
+          <circle cx="510" cy="128" r="10" fill="#0057ff" filter="url(#rct-glow)"/>
           <text x="510" y="132" font-family="monospace" font-size="10" fill="white" text-anchor="middle" font-weight="bold">P2</text>
-          <line x1="510" y1="146" x2="510" y2="170" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
-          <rect x="468" y="170" width="84" height="18" rx="3" fill="#1c1c1e" stroke="rgba(0,87,255,0.6)" stroke-width="1"/>
-          <text x="510" y="182" font-family="monospace" font-size="8.5" fill="#0057ff" text-anchor="middle" font-weight="bold">INFOSYS</text>
+          <line x1="510" y1="138" x2="510" y2="166" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          <rect x="468" y="166" width="84" height="18" rx="3" fill="#1c1c1e" stroke="rgba(0,87,255,0.6)" stroke-width="1"/>
+          <text x="510" y="178" font-family="monospace" font-size="8.5" fill="#0057ff" text-anchor="middle" font-weight="bold">INFOSYS</text>
+          <circle id="ring1" cx="510" cy="128" r="10" fill="none" stroke="#0057ff" stroke-width="2" opacity="0"/>
         </g>
-        <g class="rct-milestone" data-exp="2" style="cursor:pointer;" onclick="openExpModal(2)">
-          <circle cx="950" cy="90" r="22" fill="rgba(251,191,36,0.18)" stroke="#fbbf24" stroke-width="2.5" filter="url(#rct-glow2)" class="rct-pulse-gold"/>
-          <circle cx="950" cy="90" r="12" fill="#fbbf24"/>
+
+        <!-- ═══ MILESTONE 2 — UST (CURRENT) ═══ -->
+        <g class="rct-milestone" data-exp="2" onclick="openExpModal(2)" style="cursor:pointer;">
+          <circle class="ms-ring" cx="950" cy="90" r="18" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0"/>
+          <circle cx="950" cy="90" r="12" fill="#fbbf24" filter="url(#rct-glow)"/>
           <text x="950" y="94" font-family="monospace" font-size="10" fill="#1a1a1a" text-anchor="middle" font-weight="bold">P1</text>
-          <line x1="950" y1="68" x2="950" y2="15" stroke="rgba(255,255,255,0.5)" stroke-width="1.5"/>
-          <rect x="918" y="4" width="64" height="20" rx="3" fill="#1c1c1e" stroke="rgba(251,191,36,0.7)" stroke-width="1.5"/>
-          <text x="950" y="18" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle" font-weight="bold">UST</text>
-          <rect x="908" y="26" width="84" height="14" rx="3" fill="rgba(34,197,94,0.2)" stroke="rgba(34,197,94,0.5)" stroke-width="1"/>
-          <text x="950" y="36" font-family="monospace" font-size="7" fill="#22c55e" text-anchor="middle" letter-spacing="2">● CURRENT</text>
+          <line x1="950" y1="78" x2="950" y2="44" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+          <rect x="918" y="26" width="64" height="20" rx="3" fill="#1c1c1e" stroke="rgba(251,191,36,0.7)" stroke-width="1.5"/>
+          <text x="950" y="40" font-family="monospace" font-size="9" fill="#fbbf24" text-anchor="middle" font-weight="bold">UST</text>
+          <rect x="908" y="6" width="84" height="14" rx="3" fill="rgba(34,197,94,0.2)" stroke="rgba(34,197,94,0.5)" stroke-width="1"/>
+          <text x="950" y="16" font-family="monospace" font-size="7" fill="#22c55e" text-anchor="middle" letter-spacing="2">● CURRENT</text>
+          <circle id="ring2" cx="950" cy="90" r="12" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0"/>
         </g>
-        <!-- Race car on timeline -->
-        <circle r="9" fill="rgba(var(--accent-rgb,232,0,29),0.4)" filter="url(#rct-glow2)"><animateMotion dur="8s" repeatCount="indefinite" rotate="auto"><mpath href="#rct-line"/></animateMotion></circle>
-        <use href="#f1car-red2" transform="scale(1.1)"><animateMotion dur="8s" repeatCount="indefinite" rotate="auto"><mpath href="#rct-line"/></animateMotion></use>
-        <rect x="50" y="148" width="4" height="36" fill="white" opacity=".5" rx="1"/>
-        <text x="30" y="168" font-family="monospace" font-size="9" fill="#888" text-anchor="middle">S/F</text>
+
+        <!-- F1 car — no scale transform, animateMotion handles positioning -->
+        <use href="#f1car-sym"><animateMotion dur="8s" repeatCount="indefinite" rotate="auto"><mpath href="#rct-line"/></animateMotion></use>
       </svg>
     </div>
   </div>
@@ -1616,6 +1803,14 @@ var expModalData=[
   {pos:'P1',color:'#fbbf24',barColor:'#fbbf24',period:'MAR 2026 — PRESENT · PUNE, INDIA',title:'LEAD TESTING',sub:'Lead Testing Engineer — UST Global',logo:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" height="52" style="display:block;"><text x="0" y="44" font-family="Arial,sans-serif" font-size="52" font-weight="900" fill="#111">UST</text><rect x="70" y="30" width="120" height="16" rx="8" fill="rgba(34,197,94,0.15)" stroke="#22c55e" stroke-width="1.2"/><text x="130" y="42" font-family="monospace" font-size="8" fill="#22c55e" text-anchor="middle" letter-spacing="1.5">● CURRENT</text></svg>',achievements:['<strong>Built automation framework from scratch</strong> — end-to-end Selenium + REST Assured hybrid POM, reducing setup time by 60%.','Designed regression & smoke suites enabling <strong>sub-2-hour release validation</strong> from previously 8-hour cycles.','Leveraged <strong>BrowserStack cloud</strong> for cross-browser and cross-device automation across 15+ browsers.','Owned full CI/CD pipeline with Jenkins, Azure DevOps and <strong>Allure reporting</strong> dashboard.'],stack:['Java','Selenium','REST Assured','BrowserStack','Jenkins','Azure DevOps','Allure']}
 ];
 window.openExpModal=function(idx){
+  /* burst ring animation on click */
+  var ring = document.getElementById('ring'+idx);
+  if(ring){
+    ring.classList.remove('burst-ring');
+    void ring.getBoundingClientRect();
+    ring.classList.add('burst-ring');
+    setTimeout(function(){ ring.classList.remove('burst-ring'); }, 520);
+  }
   var d=expModalData[idx];var overlay=document.getElementById('exp-modal-overlay');var modal=document.getElementById('exp-modal');if(!overlay||!modal)return;
   document.getElementById('modal-bar').style.background=d.barColor;
   document.getElementById('modal-logo').innerHTML=d.logo||'';
@@ -1790,60 +1985,75 @@ reset();
 
   function draw(){
     ctx2.clearRect(0,0,W2,H2);
-    var accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';
-    var rgb=getAccentRaw();
+    var accent = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';
+    var rgb    = getAccentRaw();
+    var isLight = document.documentElement.getAttribute('data-mode') === 'light';
 
-    // Grid rings
+    /* adaptive colors for dark / light mode */
+    var ringOuter = isLight ? 'rgba(0,0,0,0.12)'  : 'rgba(255,255,255,0.14)';
+    var ringInner = isLight ? 'rgba(0,0,0,0.05)'  : 'rgba(255,255,255,0.05)';
+    var axisLine  = isLight ? 'rgba(0,0,0,0.07)'  : 'rgba(255,255,255,0.07)';
+    var labelCol  = isLight ? 'rgba(0,0,0,0.55)'  : 'rgba(255,255,255,0.5)';
+    var labelHov  = isLight ? 'rgba(0,0,0,0.85)'  : 'rgba(255,255,255,0.9)';
+    var pctCol    = isLight ? '#1d1d1f'            : '#ffffff';
+    var polyFill0 = isLight ? 'rgba('+rgb+',0.18)': 'rgba('+rgb+',0.28)';
+    var polyFill1 = isLight ? 'rgba('+rgb+',0.04)': 'rgba('+rgb+',0.05)';
+
+    /* grid rings */
     [0.25,0.5,0.75,1].forEach(function(r){
       ctx2.beginPath();
       for(var i=0;i<N;i++){var p=pt(i,r);i===0?ctx2.moveTo(p.x,p.y):ctx2.lineTo(p.x,p.y);}
       ctx2.closePath();
-      ctx2.strokeStyle=r===1?'rgba(255,255,255,0.14)':'rgba(255,255,255,0.05)';
-      ctx2.lineWidth=r===1?1.5:1; ctx2.stroke();
+      ctx2.strokeStyle = r===1 ? ringOuter : ringInner;
+      ctx2.lineWidth   = r===1 ? 1.5 : 1;
+      ctx2.stroke();
     });
 
-    // Axis lines + labels
+    /* axis lines + labels */
     skills.forEach(function(s,i){
-      var a=getAngle(i);
-      var ex=cx+Math.cos(a)*R, ey=cy+Math.sin(a)*R;
-      var lx=cx+Math.cos(a)*(R+30), ly=cy+Math.sin(a)*(R+30);
+      var a  = getAngle(i);
+      var ex = cx+Math.cos(a)*R, ey = cy+Math.sin(a)*R;
+      var lx = cx+Math.cos(a)*(R+30), ly = cy+Math.sin(a)*(R+30);
       ctx2.beginPath(); ctx2.moveTo(cx,cy); ctx2.lineTo(ex,ey);
-      ctx2.strokeStyle='rgba(255,255,255,0.07)'; ctx2.lineWidth=1; ctx2.stroke();
+      ctx2.strokeStyle = axisLine; ctx2.lineWidth = 1; ctx2.stroke();
       ctx2.save();
-      ctx2.font=(i===hovered?'bold 11px':'10px')+' JetBrains Mono,monospace';
-      ctx2.fillStyle=i===hovered?s.color:'rgba(255,255,255,0.5)';
-      ctx2.textAlign='center'; ctx2.textBaseline='middle';
-      ctx2.fillText(s.label,lx,ly);
+      ctx2.font      = (i===hovered?'bold 11px':'10px')+' JetBrains Mono,monospace';
+      ctx2.fillStyle = i===hovered ? s.color : labelCol;
+      ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+      ctx2.fillText(s.label, lx, ly);
       ctx2.restore();
     });
 
-    // Filled polygon
+    /* filled polygon */
     ctx2.save();
-    ctx2.shadowBlur=20; ctx2.shadowColor=accent;
+    ctx2.shadowBlur   = isLight ? 8 : 20;
+    ctx2.shadowColor  = accent;
     ctx2.beginPath();
     skills.forEach(function(s,i){var p=pt(i,cur[i]);i===0?ctx2.moveTo(p.x,p.y):ctx2.lineTo(p.x,p.y);});
     ctx2.closePath();
-    var grad=ctx2.createRadialGradient(cx,cy,0,cx,cy,R);
-    grad.addColorStop(0,'rgba('+rgb+',0.28)');
-    grad.addColorStop(1,'rgba('+rgb+',0.05)');
-    ctx2.fillStyle=grad; ctx2.fill();
-    ctx2.strokeStyle=accent; ctx2.lineWidth=2; ctx2.stroke();
+    var grad = ctx2.createRadialGradient(cx,cy,0,cx,cy,R);
+    grad.addColorStop(0, polyFill0);
+    grad.addColorStop(1, polyFill1);
+    ctx2.fillStyle   = grad; ctx2.fill();
+    ctx2.strokeStyle = accent; ctx2.lineWidth = 2; ctx2.stroke();
     ctx2.restore();
 
-    // Nodes
+    /* nodes */
     skills.forEach(function(s,i){
-      var p=pt(i,cur[i]);
+      var p = pt(i,cur[i]);
       ctx2.save();
       if(i===hovered){
-        ctx2.shadowBlur=24; ctx2.shadowColor=s.color;
+        ctx2.shadowBlur  = isLight ? 12 : 24;
+        ctx2.shadowColor = s.color;
         ctx2.beginPath(); ctx2.arc(p.x,p.y,8,0,Math.PI*2);
-        ctx2.fillStyle=s.color; ctx2.fill();
-        ctx2.font='bold 11px JetBrains Mono,monospace';
-        ctx2.fillStyle='#fff'; ctx2.textAlign='center'; ctx2.textBaseline='middle';
-        ctx2.fillText(Math.round(cur[i]*100)+'%',p.x,p.y-20);
+        ctx2.fillStyle = s.color; ctx2.fill();
+        ctx2.font      = 'bold 11px JetBrains Mono,monospace';
+        ctx2.fillStyle = pctCol;
+        ctx2.textAlign = 'center'; ctx2.textBaseline = 'middle';
+        ctx2.fillText(Math.round(cur[i]*100)+'%', p.x, p.y-20);
       } else {
         ctx2.beginPath(); ctx2.arc(p.x,p.y,5,0,Math.PI*2);
-        ctx2.fillStyle=s.color; ctx2.fill();
+        ctx2.fillStyle = s.color; ctx2.fill();
       }
       ctx2.restore();
     });
@@ -1870,6 +2080,13 @@ reset();
       if(e.isIntersecting&&!running2){running2=true;animate();}
     });
   },{threshold:0.3}).observe(canvas);
+
+  /* redraw on theme/mode switch */
+  canvas.addEventListener('redraw', function(){ draw(); });
+  /* also redraw when dark mode toggles via MutationObserver */
+  new MutationObserver(function(){ draw(); }).observe(
+    document.documentElement, {attributes:true, attributeFilter:['data-mode','data-theme']}
+  );
 
   draw();
 })();
@@ -3009,6 +3226,152 @@ reset();
     pct.textContent=p+'%';
     if(p>=95)pct.style.color=ac();
     else pct.style.color='';
+  },{passive:true});
+})();
+
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    if(arc){arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);arc.style.stroke=ac();}
+    if(pct){pct.textContent=p+'%';pct.style.color=p>=95?ac():'';}
+  },{passive:true});
+})();
+
+/* ── PWA ── */
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  var sw="self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});";
+  var blob=new Blob([sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  var deferred;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();deferred=e;
+    var btn=document.getElementById('pwa-install-btn');
+    if(btn){btn.style.display='flex';btn.onclick=function(){deferred.prompt();};}
+  });
+})();
+
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    if(arc){arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);arc.style.stroke=ac();}
+    if(pct){pct.textContent=p+'%';pct.style.color=p>=95?ac():'';}
+  },{passive:true});
+})();
+
+/* ── PWA ── */
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  var sw="self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});";
+  var blob=new Blob([sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  var deferred;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();deferred=e;
+    var btn=document.getElementById('pwa-install-btn');
+    if(btn){btn.style.display='flex';btn.onclick=function(){deferred.prompt();};}
+  });
+})();
+
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    if(arc){arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);arc.style.stroke=ac();}
+    if(pct){pct.textContent=p+'%';pct.style.color=p>=95?ac():'';}
+  },{passive:true});
+})();
+
+/* ── PWA ── */
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  var sw="self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});";
+  var blob=new Blob([sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  var deferred;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();deferred=e;
+    var btn=document.getElementById('pwa-install-btn');
+    if(btn){btn.style.display='flex';btn.onclick=function(){deferred.prompt();};}
+  });
+})();
+
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    if(arc){arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);arc.style.stroke=ac();}
+    if(pct){pct.textContent=p+'%';pct.style.color=p>=95?ac():'';}
+  },{passive:true});
+})();
+
+/* ── PWA ── */
+(function(){
+  if(!('serviceWorker' in navigator)) return;
+  var sw="self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});";
+  var blob=new Blob([sw],{type:'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
+  var deferred;
+  window.addEventListener('beforeinstallprompt',function(e){
+    e.preventDefault();deferred=e;
+    var btn=document.getElementById('pwa-install-btn');
+    if(btn){btn.style.display='flex';btn.onclick=function(){deferred.prompt();};}
+  });
+})();
+
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    if(arc){arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);arc.style.stroke=ac();}
+    if(pct){pct.textContent=p+'%';pct.style.color=p>=95?ac():'';}
   },{passive:true});
 })();
 
