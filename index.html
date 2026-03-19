@@ -56,9 +56,30 @@ button { font-family:inherit; cursor:none; border:none; background:none; }
 /* ── GitHub loaded ── */
 #gh-stats-wrap{opacity:0;transition:opacity .6s;}
 /* ── CLI ── */
-#cli-overlay{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.97) translateY(8px);z-index:90000;width:min(680px,94vw);background:#0d0d0d;border:1px solid rgba(255,255,255,0.12);border-radius:16px;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .25s,transform .28s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 40px 100px rgba(0,0,0,.9),0 0 0 1px rgba(var(--accent-rgb,232,0,29),0.2);}
-#cli-hint{position:fixed;bottom:32px;left:32px;z-index:4000;display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface);border:1px solid var(--border2);border-radius:100px;cursor:pointer;font-family:var(--ff-m);font-size:10px;letter-spacing:.1em;color:var(--text3);transition:border-color .2s,color .2s,transform .2s;animation:fadeUp .8s 2s both;}
+/* CLI — anchored bottom-left, above the hint badge */
+#cli-overlay{
+  position:fixed;
+  bottom:72px;          /* sits above the hint badge (which is at bottom:32px + ~28px height) */
+  left:24px;
+  z-index:90000;
+  width:360px;
+  max-width:calc(100vw - 48px);
+  background:#0d0d0d;
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(10px) scale(0.97);
+  transition:opacity .22s ease, transform .25s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 16px 48px rgba(0,0,0,.8), 0 0 0 1px rgba(var(--accent-rgb,232,0,29),0.15);
+}
+#cli-overlay.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
+#cli-hint{position:fixed;bottom:24px;left:24px;z-index:4000;display:flex;align-items:center;gap:8px;padding:7px 14px;background:var(--surface);border:1px solid var(--border2);border-radius:100px;cursor:pointer;font-family:var(--ff-m);font-size:10px;letter-spacing:.1em;color:var(--text3);transition:border-color .2s,color .2s,transform .2s;animation:fadeUp .8s 2s both;}
 #cli-hint:hover{border-color:var(--accent);color:var(--text);transform:translateY(-2px);}
+@media(max-width:768px){#cli-overlay{width:calc(100vw - 32px);left:16px;bottom:64px;}}
 /* ── THREE.JS canvas ── */
 #hero-3d-canvas{display:block;}
 @media(max-width:1100px){#hero-3d-canvas{display:none!important;}}
@@ -1207,21 +1228,24 @@ html[data-mode="light"] #f1c { background:#e8e8e8!important; }
 </footer>
 
 
-<!-- CLI TERMINAL OVERLAY -->
+<!-- CLI TERMINAL OVERLAY — anchored above hint badge, bottom-left -->
 <div id="cli-overlay" onclick="event.stopPropagation()">
-  <div style="padding:10px 16px;background:#111;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;">
-    <div style="display:flex;align-items:center;gap:7px;">
-      <span style="width:11px;height:11px;border-radius:50%;background:#ff5f56;display:inline-block;cursor:pointer;" onclick="closeCLI()"></span>
-      <span style="width:11px;height:11px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
-      <span style="width:11px;height:11px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
+  <!-- title bar -->
+  <div style="padding:8px 14px;background:#111;border-bottom:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#ff5f56;display:inline-block;cursor:pointer;" onclick="closeCLI()"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;display:inline-block;"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:#27c93f;display:inline-block;"></span>
     </div>
-    <span style="font-family:var(--ff-m);font-size:10px;color:#555;letter-spacing:.1em;">TERMINAL — Press / to toggle</span>
-    <button onclick="closeCLI()" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#888;font-size:11px;padding:2px 10px;cursor:pointer;font-family:var(--ff-m);letter-spacing:.06em;">ESC</button>
+    <span style="font-family:var(--ff-m);font-size:9px;color:#555;letter-spacing:.1em;">›_ TERMINAL</span>
+    <button onclick="closeCLI()" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:4px;color:#666;font-size:9px;padding:1px 8px;cursor:pointer;font-family:var(--ff-m);">ESC</button>
   </div>
-  <div id="cli-output" style="padding:16px 20px;height:300px;overflow-y:auto;font-family:var(--ff-m);font-size:12px;line-height:1.7;color:#d4d4d4;scrollbar-width:thin;"></div>
-  <div style="padding:10px 16px;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;background:#090909;">
-    <span style="color:#22c55e;font-family:var(--ff-m);font-size:12px;flex-shrink:0;white-space:nowrap;">shubham@portfolio:~$</span>
-    <input id="cli-input" style="flex:1;background:none;border:none;outline:none;color:#d4d4d4;font-family:var(--ff-m);font-size:12px;caret-color:var(--accent);min-width:0;" placeholder="Type a command... (try: help)" autocomplete="off" spellcheck="false"/>
+  <!-- output -->
+  <div id="cli-output" style="padding:12px 16px;height:200px;overflow-y:auto;font-family:var(--ff-m);font-size:11px;line-height:1.65;color:#d4d4d4;scrollbar-width:thin;flex:1;"></div>
+  <!-- input bar -->
+  <div style="padding:8px 14px;border-top:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;gap:8px;background:#090909;flex-shrink:0;">
+    <span style="color:#22c55e;font-family:var(--ff-m);font-size:11px;flex-shrink:0;white-space:nowrap;">$</span>
+    <input id="cli-input" style="flex:1;background:none;border:none;outline:none;color:#d4d4d4;font-family:var(--ff-m);font-size:11px;caret-color:var(--accent);min-width:0;" placeholder="help" autocomplete="off" spellcheck="false"/>
   </div>
 </div>
 
@@ -1693,18 +1717,14 @@ reset();
   /* ── Open / Close ── */
   function openCLI(){
     isOpen=true;
-    overlay.style.opacity='1';
-    overlay.style.pointerEvents='all';
-    overlay.style.transform='translate(-50%,-50%) scale(1) translateY(0)';
+    overlay.classList.add('open');
     input.focus();
     if(!output.children.length)
-      appendOut('<span style="color:var(--accent);font-weight:700">SHUBHAM.YV AI TERMINAL</span>  — Powered by built-in intelligence. Type <span style="color:#22c55e">help</span>');
+      appendOut('<span style="color:var(--accent);font-weight:700">SHUBHAM.YV AI TERMINAL</span>  — Type <span style="color:#22c55e">help</span> to start');
   }
   function closeCLI(){
     isOpen=false;
-    overlay.style.opacity='0';
-    overlay.style.pointerEvents='none';
-    overlay.style.transform='translate(-50%,-50%) scale(0.97) translateY(8px)';
+    overlay.classList.remove('open');
     input.blur();
   }
   window.openCLI=openCLI;
@@ -2547,51 +2567,7 @@ reset();
   });
 })();
 
-/* =============================================
-   TIER 2-C  MOUSE-REACTIVE AMBIENT BACKGROUND
-   A large blurred radial gradient slowly
-   follows the mouse across the hero. Depth
-   without weight. CSS-only after init.
-   ============================================= */
-(function(){
-  var hero = document.getElementById('hero');
-  if(!hero) return;
 
-  var amb = document.createElement('div');
-  amb.id  = 'sy-ambient';
-  amb.style.cssText = [
-    'position:absolute','inset:0','pointer-events:none','z-index:0',
-    'transition:background 1.8s ease',
-    'will-change:background'
-  ].join(';');
-  hero.style.position = 'relative';
-  hero.insertBefore(amb, hero.firstChild);
-
-  var tx = 30, ty = 40;   /* target % */
-  var cx = 30, cy = 40;   /* current % */
-  var raf;
-
-  function lerp(a, b, t){ return a + (b - a) * t; }
-
-  function getAccentRGB(){
-    return getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '232,0,29';
-  }
-
-  document.addEventListener('mousemove', function(e){
-    var r = hero.getBoundingClientRect();
-    if(e.clientY < r.top || e.clientY > r.bottom) return;
-    tx = ((e.clientX - r.left) / r.width  * 100).toFixed(1);
-    ty = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
-  });
-
-  (function loop(){
-    cx = lerp(cx, parseFloat(tx), 0.025);
-    cy = lerp(cy, parseFloat(ty), 0.025);
-    var rgb = getAccentRGB();
-    amb.style.background = 'radial-gradient(ellipse 70% 55% at '+cx.toFixed(1)+'% '+cy.toFixed(1)+'%, rgba('+rgb+',0.13) 0%, transparent 70%)';
-    raf = requestAnimationFrame(loop);
-  })();
-})();
 
 /* =============================================
    TIER 2-D  STAGGER-CASCADE SKILL PILLS
@@ -2624,130 +2600,7 @@ reset();
   setTimeout(staggerPills, 400); /* initial */
 })();
 
-/* =============================================
-   TIER 3-A  WEBGL HEAT SHIMMER SHADER
-   Hot tarmac fluid noise in the hero.
-   Mouse-reactive colour shift. Runs on a
-   hidden canvas behind everything else.
-   Gracefully skips if WebGL unavailable.
-   ============================================= */
-(function(){
-  var hero = document.getElementById('hero');
-  if(!hero) return;
 
-  var canvas = document.createElement('canvas');
-  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.55;';
-  hero.insertBefore(canvas, hero.firstChild);
-
-  var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-  if(!gl){ canvas.remove(); return; }
-
-  var VS = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
-  var FS = [
-    'precision mediump float;',
-    'uniform vec2 u_res;',
-    'uniform float u_t;',
-    'uniform vec2 u_mouse;',
-    'uniform vec3 u_accent;',
-    /* simplex-style noise */
-    'vec3 mod289(vec3 x){return x-floor(x*(1./289.))*289.;}',
-    'vec2 mod289(vec2 x){return x-floor(x*(1./289.))*289.;}',
-    'vec3 permute(vec3 x){return mod289(((x*34.)+1.)*x);}',
-    'float snoise(vec2 v){',
-    '  const vec4 C=vec4(.211324865405187,.366025403784439,-.577350269189626,.024390243902439);',
-    '  vec2 i=floor(v+dot(v,C.yy));',
-    '  vec2 x0=v-i+dot(i,C.xx);',
-    '  vec2 i1=(x0.x>x0.y)?vec2(1.,0.):vec2(0.,1.);',
-    '  vec4 x12=x0.xyxy+C.xxzz;',
-    '  x12.xy-=i1;',
-    '  i=mod289(i);',
-    '  vec3 p=permute(permute(i.y+vec3(0.,i1.y,1.))+i.x+vec3(0.,i1.x,1.));',
-    '  vec3 m=max(.5-vec3(dot(x0,x0),dot(x12.xy,x12.xy),dot(x12.zw,x12.zw)),0.);',
-    '  m=m*m;m=m*m;',
-    '  vec3 x2=2.*fract(p*C.www)-1.;',
-    '  vec3 h=abs(x2)-.5;',
-    '  vec3 ox=floor(x2+.5);',
-    '  vec3 a0=x2-ox;',
-    '  m*=1.79284291400159-.85373472095314*(a0*a0+h*h);',
-    '  vec3 g;',
-    '  g.x=a0.x*x0.x+h.x*x0.y;',
-    '  g.yz=a0.yz*x12.xz+h.yz*x12.yw;',
-    '  return 130.*dot(m,g);',
-    '}',
-    'void main(){',
-    '  vec2 uv=gl_FragCoord.xy/u_res;',
-    '  vec2 mu=u_mouse/u_res;',
-    '  float d=length(uv-mu);',
-    '  float t=u_t*.4;',
-    '  float n=snoise(uv*3.5+vec2(t*.6,t*.4));',
-    '  n+=snoise(uv*7.+vec2(-t*.5,t*.3))*.5;',
-    '  n+=snoise(uv*14.+vec2(t*.3,-t*.5))*.25;',
-    '  n=n*.5+.5;',                              /* 0-1 */
-    '  float heat=n*(1.-.5*d);',
-    '  float alpha=heat*.18+.02;',
-    '  gl_FragColor=vec4(u_accent*heat,alpha);',
-    '}'
-  ].join('');
-
-  function compile(type, src){
-    var s = gl.createShader(type);
-    gl.shaderSource(s, src); gl.compileShader(s);
-    if(!gl.getShaderParameter(s, gl.COMPILE_STATUS)){ gl.deleteShader(s); return null; }
-    return s;
-  }
-  var prog = gl.createProgram();
-  var vs = compile(gl.VERTEX_SHADER, VS);
-  var fs = compile(gl.FRAGMENT_SHADER, FS);
-  if(!vs || !fs){ canvas.remove(); return; }
-  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-  if(!gl.getProgramParameter(prog, gl.LINK_STATUS)){ canvas.remove(); return; }
-  gl.useProgram(prog);
-
-  var buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
-  var loc = gl.getAttribLocation(prog,'p');
-  gl.enableVertexAttribArray(loc);
-  gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-  var uRes   = gl.getUniformLocation(prog,'u_res');
-  var uT     = gl.getUniformLocation(prog,'u_t');
-  var uMouse = gl.getUniformLocation(prog,'u_mouse');
-  var uAccent= gl.getUniformLocation(prog,'u_accent');
-
-  var mx = 0, my = 0;
-  document.addEventListener('mousemove', function(e){
-    var r = hero.getBoundingClientRect();
-    mx = e.clientX - r.left;
-    my = r.height - (e.clientY - r.top);
-  });
-
-  function parseAccent(){
-    var rgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '232,0,29';
-    var parts = rgb.split(',').map(function(v){ return parseInt(v.trim(),10)/255; });
-    return parts;
-  }
-
-  var start = performance.now();
-  function resize(){
-    canvas.width  = hero.offsetWidth;
-    canvas.height = hero.offsetHeight;
-    gl.viewport(0,0,canvas.width,canvas.height);
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  (function loop(){
-    requestAnimationFrame(loop);
-    var t = (performance.now() - start) * 0.001;
-    var ac = parseAccent();
-    gl.uniform2f(uRes, canvas.width, canvas.height);
-    gl.uniform1f(uT, t);
-    gl.uniform2f(uMouse, mx, my);
-    gl.uniform3f(uAccent, ac[0]||0.91, ac[1]||0, ac[2]||0.11);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-  })();
-})();
 
 /* =============================================
    TIER 3-B  VIEW TRANSITIONS API
@@ -2890,8 +2743,6 @@ reset();
   });
 })();
 
-
-
 /* =============================================
    PWA SERVICE WORKER
    ============================================= */
@@ -2907,7 +2758,6 @@ reset();
     if(btn){ btn.style.display='flex'; btn.onclick=function(){ deferred.prompt(); }; }
   });
 })();
-
 
 </script>
 </body>
