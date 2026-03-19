@@ -124,12 +124,14 @@ body.c-text  #cursor-ring { width:3px; height:28px; border-radius:2px; border-co
 .guide-arr-sm { color:rgba(255,255,255,0.2); font-size:16px; flex-shrink:0; transition:color .18s; line-height:1; }
 @media(max-width:1100px){ #hero-guide{display:none!important;} }
 
-#scroll-progress {
-  position:fixed; top:0; left:0; height:2px; width:0%;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  z-index:9999; box-shadow:0 0 8px var(--accent-glow);
-  transition:width 0.1s linear, background-color 0.35s ease;
-}
+/* scroll-progress removed — replaced by scroll-wheel */
+
+/* ── SCROLL WHEEL ── */
+#scroll-wheel { pointer-events:all; }
+#scroll-wheel:hover { transform:scale(1.12) !important; filter:drop-shadow(0 0 8px var(--accent)); }
+#scroll-wheel:hover #scroll-pct { color:var(--accent); }
+@media(max-width:768px){ #scroll-wheel { display:none !important; } }
+
 
 #navbar {
   position:fixed; top:0; left:0; right:0; z-index:1000;
@@ -169,7 +171,7 @@ body.c-text  #cursor-ring { width:3px; height:28px; border-radius:2px; border-co
 .team-btn[data-theme="mclaren"]:not(.active) .team-btn-dot  { background:#FF6B00; }
 .team-btn[data-theme="mercedes"]:not(.active) .team-btn-dot { background:#00D2A0; }
 
-#team-livery-bar { position:fixed; top:0; left:0; right:0; height:3px; z-index:9999; background:var(--accent); box-shadow:0 0 12px var(--accent-glow); transition:background 0.4s ease, box-shadow 0.4s ease; }
+/* livery bar removed */
 #mode-flash { position:fixed; inset:0; z-index:99990; pointer-events:none; opacity:0; background:var(--accent); transition:opacity 0.15s ease !important; }
 #mode-flash.flash { opacity:0.07; }
 .nav-hamburger { display:none; flex-direction:column; gap:5px; width:28px; }
@@ -363,7 +365,7 @@ section { padding:120px 48px; }
 .form-submit { width:100%; padding:18px; background:var(--accent); color:#fff; font-family:var(--ff-b); font-size:15px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; border-radius:14px; transition:transform .2s var(--spring), box-shadow .2s !important; }
 .form-submit:hover { transform:translateY(-3px); box-shadow:0 16px 40px var(--accent-glow); }
 
-footer { background:var(--bg); border-top:1px solid var(--border); padding:60px 48px; }
+footer { background:var(--bg); border-top:1px solid var(--border); padding:60px 48px 130px; }
 .footer-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }
 .footer-brand { font-family:var(--ff-d); font-size:22px; letter-spacing:.08em; color:var(--text); display:flex; align-items:center; gap:10px; margin-bottom:8px; }
 .footer-tagline { font-size:13px; color:var(--text3); font-weight:300; }
@@ -495,8 +497,7 @@ function applyTeam(theme, skipFlash) {
   document.querySelectorAll('.team-btn').forEach(function(btn) {
     btn.classList.toggle('active', btn.getAttribute('data-theme') === theme);
   });
-  var bar = document.getElementById('team-livery-bar');
-  if (bar) { bar.style.background = t.accent; bar.style.boxShadow = '0 0 14px ' + t.accentGlow; }
+  /* livery bar removed */
   var prog = document.getElementById('scroll-progress');
   if (prog) { prog.style.background = 'linear-gradient(90deg,'+t.accent+','+t.accent2+')'; prog.style.boxShadow = '0 0 8px '+t.accentGlow; }
 }
@@ -595,8 +596,7 @@ html[data-mode="light"] #f1c { background:#e8e8e8!important; }
 
 <div id="cursor-dot"></div>
 <div id="cursor-ring"></div>
-<div id="scroll-progress"></div>
-<div id="team-livery-bar"></div>
+
 <div id="mode-flash"></div>
 
 <!-- NAVBAR -->
@@ -1255,6 +1255,52 @@ html[data-mode="light"] #f1c { background:#e8e8e8!important; }
   Press <kbd style="background:var(--bg2);border:1px solid var(--border2);border-radius:4px;padding:1px 6px;font-size:9px;color:var(--text2);">/</kbd> for CLI
 </div>
 
+<!-- SCROLL WHEEL — mid-left fixed indicator -->
+<div id="scroll-wheel" style="
+  position:fixed;
+  bottom:40px;
+  right:120px;
+  top:auto;
+  transform:none;
+  z-index:5000;
+  width:44px;
+  height:44px;
+  cursor:pointer;
+  opacity:0;
+  transition:opacity .4s ease, transform .2s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll progress — click to top">
+  <svg width="44" height="44" viewBox="0 0 44 44" style="display:block;transform:rotate(-90deg);">
+    <!-- Track ring -->
+    <circle cx="22" cy="22" r="18"
+      fill="none"
+      stroke="rgba(255,255,255,0.08)"
+      stroke-width="3"/>
+    <!-- Progress arc -->
+    <circle id="scroll-arc" cx="22" cy="22" r="18"
+      fill="none"
+      stroke="var(--accent)"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-dasharray="113.1"
+      stroke-dashoffset="113.1"
+      style="transition:stroke-dashoffset .12s linear, stroke .35s ease;filter:drop-shadow(0 0 4px var(--accent));"/>
+  </svg>
+  <!-- Percentage text (upright, centred) -->
+  <div id="scroll-pct" style="
+    position:absolute;
+    font-family:var(--ff-m);
+    font-size:8px;
+    letter-spacing:.04em;
+    color:var(--text2);
+    line-height:1;
+    user-select:none;
+    transition:color .35s;
+  ">0%</div>
+</div>
+
 <!-- PIT CREW AI -->
 <button id="pit-toggle" aria-label="Open Pit Crew AI">
   <div class="pit-badge">●</div>
@@ -1330,12 +1376,12 @@ function getAccentRGB(){ return getComputedStyle(document.documentElement).getPr
   var nav=document.getElementById('navbar');
   var links=document.querySelectorAll('.nav-links a');
   var sections=Array.from(document.querySelectorAll('section[id]'));
-  var prog=document.getElementById('scroll-progress');
+  /* scroll-progress element removed */
   window.addEventListener('scroll',function(){
     var sy=window.scrollY;
     nav.classList.toggle('scrolled',sy>50);
     var total=document.documentElement.scrollHeight-window.innerHeight;
-    if(prog)prog.style.width=(total>0?sy/total*100:0)+'%';
+    /* scroll % handled by scroll-wheel */
     var cur='';sections.forEach(function(s){if(sy>=s.offsetTop-100)cur=s.id;});
     links.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+cur);});
   });
@@ -2743,9 +2789,30 @@ reset();
   });
 })();
 
-/* =============================================
-   PWA SERVICE WORKER
-   ============================================= */
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;
+  var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;
+    var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);
+    arc.style.stroke=ac();
+    pct.textContent=p+'%';
+    if(p>=95)pct.style.color=ac();
+    else pct.style.color='';
+  },{passive:true});
+})();
+
+/* ── PWA ── */
 (function(){
   if(!('serviceWorker' in navigator)) return;
   var sw="self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));});";
@@ -2753,9 +2820,9 @@ reset();
   navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(function(){});
   var deferred;
   window.addEventListener('beforeinstallprompt',function(e){
-    e.preventDefault(); deferred=e;
+    e.preventDefault();deferred=e;
     var btn=document.getElementById('pwa-install-btn');
-    if(btn){ btn.style.display='flex'; btn.onclick=function(){ deferred.prompt(); }; }
+    if(btn){btn.style.display='flex';btn.onclick=function(){deferred.prompt();};}
   });
 })();
 
