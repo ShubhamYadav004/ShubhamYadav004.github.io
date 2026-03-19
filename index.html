@@ -440,41 +440,218 @@ footer { background:var(--bg); border-top:1px solid var(--border); padding:60px 
   .exp-right{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:48px;margin-top:48px;}
   .contact-layout{grid-template-columns:1fr;gap:60px;}
 }
+/* ════════════════════════════════════════════════
+   RESPONSIVE — TABLET  ≤ 1024px
+   ════════════════════════════════════════════════ */
+@media(max-width:1024px){
+  /* Navbar */
+  .nav-logo-sub{display:none;}
+  /* Hero */
+  .hero-track-panel{display:none;}
+  /* Layout */
+  .about-layout{grid-template-columns:1fr;gap:48px;}
+  .exp-layout{grid-template-columns:1fr;}
+  .exp-right{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:40px;margin-top:40px;}
+  .contact-layout{grid-template-columns:1fr;gap:48px;}
+  /* Projects terminal stacks */
+  .proj-terminal-grid, [style*="grid-template-columns:280px"]{
+    display:flex!important;flex-direction:column!important;
+  }
+  #proj-panel{border-right:none!important;border-bottom:1px solid var(--border2);}
+  /* Skills loadout stacks */
+  [style*="grid-template-columns:1fr 300px"]{
+    display:flex!important;flex-direction:column!important;
+  }
+  #sk-class-list{flex-direction:row!important;flex-wrap:wrap;gap:8px!important;}
+  .sk-class-card{flex:1;min-width:140px;}
+  /* Skills radar section */
+  #skills-radar-section [style*="grid-template-columns:1fr 1fr"]{
+    grid-template-columns:1fr!important;
+  }
+  /* GitHub stats 2-col on tablet */
+  #gh-stats-wrap [style*="grid-template-columns:repeat(4"]{
+    grid-template-columns:repeat(2,1fr)!important;
+  }
+}
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — MOBILE  ≤ 768px
+   ════════════════════════════════════════════════ */
 @media(max-width:768px){
-  section{padding:60px 20px;}
-  #hero{padding-left:20px!important;padding-right:20px!important;padding-bottom:60px;}
-  #navbar{padding:0 18px;height:56px;}
+  /* ── Base ── */
+  section{padding:56px 18px;}
+  #hero{padding-left:18px!important;padding-right:18px!important;padding-bottom:72px;}
+
+  /* ── Navbar ── */
+  #navbar{padding:0 16px;height:54px;}
   .nav-links,.nav-cta{display:none;}
   .nav-hamburger{display:flex;}
-  .hero-headline{font-size:clamp(52px,14vw,80px);}
-  .hero-sub{font-size:15px;}
-  .about-layout{grid-template-columns:1fr;gap:36px;}
-  .about-pillars{grid-template-columns:1fr;}
-  .contact-layout{grid-template-columns:1fr;gap:36px;}
-  .footer-inner{flex-direction:column;text-align:center;gap:20px;}
-  .footer-social{justify-content:center;}
-  .footer-links{flex-wrap:wrap;justify-content:center;gap:16px;}
-  #pit-panel{width:calc(100vw - 20px);max-width:400px;right:10px;bottom:90px;height:500px;}
-  #pit-toggle{right:16px;bottom:16px;width:64px;height:68px;}
   #team-selector .team-btn{padding:4px 8px;}
   #team-selector .team-btn-label{display:none;}
-  .section-title{font-size:clamp(44px,12vw,72px);}
+  #dm-toggle{width:30px;height:30px;font-size:14px;}
+  #pwa-install-btn{display:none!important;}
+
+  /* ── Hero ── */
+  .hero-headline{font-size:clamp(48px,13vw,76px);}
+  .hero-sub{font-size:14px;line-height:1.6;}
+  .hero-badge{font-size:9px;padding:4px 10px;}
+  .hero-actions{flex-wrap:wrap;gap:10px;}
+  .btn-primary{padding:13px 28px;font-size:13px;}
+  .btn-ghost{padding:13px 22px;font-size:13px;}
+  .hero-scroll-hint{display:none;}
+
+  /* ── Sector banner ── */
+  .sector-banner{
+    gap:0;padding:0;justify-content:flex-start;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .sector-banner::-webkit-scrollbar{display:none;}
+  .sector-item{padding:12px 16px;flex-shrink:0;}
+  .sector-val{font-size:20px;}
+
+  /* ── About ── */
+  .about-layout{grid-template-columns:1fr;gap:32px;}
+  .about-pillars{grid-template-columns:1fr 1fr;}
+  .about-intro{font-size:17px;}
+
+  /* ── Skills ── */
+  #sk-tabs{gap:6px;}
+  .sk-tab{padding:8px 14px;font-size:10px;}
+  [style*="grid-template-columns:1fr 300px"]{
+    display:flex!important;flex-direction:column!important;
+  }
+  #sk-class-list{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important;}
+  #sk-card{padding:24px 20px;min-height:auto;}
+
+  /* ── Projects ── */
+  [style*="grid-template-columns:280px 1fr"]{
+    display:flex!important;flex-direction:column!important;
+  }
+  #proj-panel{border-right:none!important;border-bottom:1px solid var(--border2);}
+  #proj-terminal{min-height:260px!important;font-size:11px;}
+  #proj-list{max-height:180px;overflow-y:auto;}
+
+  /* ── Experience ── */
+  .exp-layout{grid-template-columns:1fr;}
+  .exp-right{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:32px;margin-top:32px;}
+  .exp-title{font-size:32px;}
+  #rct-svg{font-size:8px;}
+
+  /* ── Skills radar ── */
+  #skills-radar-section [style*="grid-template-columns:1fr 1fr"]{
+    display:flex!important;flex-direction:column!important;gap:32px!important;
+  }
+  #skills-radar{max-width:300px!important;margin:0 auto;display:block;}
+
+  /* ── GitHub stats ── */
+  #gh-stats-wrap [style*="grid-template-columns:repeat(4"]{
+    grid-template-columns:repeat(2,1fr)!important;
+  }
+
+  /* ── Contact ── */
+  .contact-layout{grid-template-columns:1fr;gap:32px;}
+  .form-title{font-size:24px;}
+
+  /* ── Footer ── */
+  .footer-inner{flex-direction:column;text-align:center;gap:16px;}
+  .footer-social{justify-content:center;}
+  .footer-links{flex-wrap:wrap;justify-content:center;gap:14px;}
+  footer{padding:48px 18px 120px;}
+
+  /* ── Fixed UI ── */
+  #pit-panel{width:calc(100vw - 16px);max-width:420px;right:8px;bottom:86px;height:480px;}
+  #pit-toggle{right:14px;bottom:14px;width:60px;height:64px;}
+  #pit-toggle .pit-btn-label{font-size:7px;}
+
+  /* ── Section titles ── */
+  .section-title{font-size:clamp(40px,11vw,68px);}
+  h2[style*="font-size:clamp(64px"]{font-size:clamp(52px,12vw,80px)!important;}
+
+  /* ── Wave dividers ── */
+  .sy-wave-wrap{height:28px;}
+  .sy-wave-wrap svg{height:28px;}
+
+  /* ── DRS divider ── */
+  .drs-label{display:none;}
+
+  /* ── Game ── */
+  #g-hud-top{flex-wrap:wrap;}
+  .g-stat{padding:7px 10px;min-width:52px;}
+  .g-stat-val{font-size:20px;}
+  #g-minimap{display:none;}
+  #g-dpad{display:flex!important;}
+  #g-footer-bar{flex-direction:column;gap:8px;align-items:flex-start;}
 }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — SMALL MOBILE  ≤ 480px
+   ════════════════════════════════════════════════ */
 @media(max-width:480px){
-  section{padding:48px 16px;}
-  #hero{padding-left:16px!important;padding-right:16px!important;}
-  #navbar{padding:0 14px;}
-  .hero-headline{font-size:clamp(44px,13vw,64px);}
-  .hero-actions{flex-direction:column;align-items:flex-start;gap:12px;}
-  .btn-primary,.btn-ghost{width:100%;justify-content:center;}
+  section{padding:44px 14px;}
+  #hero{padding-left:14px!important;padding-right:14px!important;}
+  #navbar{padding:0 12px;}
+
+  /* Hero */
+  .hero-headline{font-size:clamp(40px,12vw,60px);}
+  .hero-actions{flex-direction:column;align-items:stretch;gap:10px;}
+  .btn-primary,.btn-ghost{width:100%;justify-content:center;padding:14px 20px;}
+
+  /* About pillars 1-col on small */
   .about-pillars{grid-template-columns:1fr;}
-  #pit-panel{width:calc(100vw - 16px);right:8px;height:480px;}
+
+  /* Skills */
+  #sk-class-list{grid-template-columns:1fr!important;}
+
+  /* Projects terminal font smaller */
+  #proj-terminal{font-size:10px;}
+
+  /* GitHub stats 1-col on tiny */
+  #gh-stats-wrap [style*="grid-template-columns:repeat(4"]{
+    grid-template-columns:1fr 1fr!important;
+  }
+
+  /* Pit panel full width */
+  #pit-panel{width:calc(100vw - 8px);right:4px;height:440px;}
+
+  /* Footer */
+  footer{padding:40px 14px 110px;}
+  .footer-brand{font-size:18px;}
+  .footer-links a{font-size:12px;}
+
+  /* Section titles */
+  .section-title{font-size:clamp(36px,10vw,56px);}
+  h2[style*="font-size:clamp(64px"]{font-size:clamp(40px,11vw,64px)!important;}
+
+  /* Game HUD compact */
+  .g-stat{padding:5px 8px;min-width:44px;}
+  .g-stat-val{font-size:16px;}
+  .g-stat-label{font-size:7px;}
 }
+
+/* ════════════════════════════════════════════════
+   RESPONSIVE — LANDSCAPE MOBILE
+   ════════════════════════════════════════════════ */
+@media(max-width:768px) and (orientation:landscape){
+  #hero{min-height:auto;padding-top:72px;padding-bottom:40px;}
+  .hero-headline{font-size:clamp(36px,8vw,56px);}
+  section{padding:40px 18px;}
+}
+
+/* ════════════════════════════════════════════════
+   TOUCH DEVICES — disable cursor
+   ════════════════════════════════════════════════ */
 @media(hover:none) and (pointer:coarse){
   body{cursor:auto!important;}
   button,a{cursor:pointer!important;}
   #cursor-dot,#cursor-ring{display:none!important;}
+  /* Remove tilt effect on touch */
+  .project-card:hover,.pillar-card:hover,.sk-class-card:hover{
+    transform:none!important;
+    box-shadow:none!important;
+  }
 }
+
 </style>
 <script>
 var TEAMS = {
@@ -2787,6 +2964,29 @@ reset();
     if(isOn){ startSound(); btn.textContent='🔇 Sound'; btn.style.color='var(--accent)'; }
     else    { stopSound();  btn.textContent='🔊 Sound'; btn.style.color='var(--text3)'; }
   });
+})();
+
+/* ── SCROLL WHEEL JS ── */
+(function(){
+  var wheel=document.getElementById('scroll-wheel');
+  var arc=document.getElementById('scroll-arc');
+  var pct=document.getElementById('scroll-pct');
+  var CIRC=113.1;
+  var shown=false;
+  function ac(){return getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#e8001d';}
+  window.addEventListener('scroll',function(){
+    var sy=window.scrollY;
+    var total=document.documentElement.scrollHeight-window.innerHeight;
+    var prog=total>0?sy/total:0;
+    var p=Math.round(prog*100);
+    if(!shown&&p>3){shown=true;wheel.style.opacity='1';wheel.style.pointerEvents='all';}
+    else if(shown&&p<=1){shown=false;wheel.style.opacity='0';wheel.style.pointerEvents='none';}
+    arc.style.strokeDashoffset=(CIRC-prog*CIRC).toFixed(2);
+    arc.style.stroke=ac();
+    pct.textContent=p+'%';
+    if(p>=95)pct.style.color=ac();
+    else pct.style.color='';
+  },{passive:true});
 })();
 
 /* ── SCROLL WHEEL JS ── */
